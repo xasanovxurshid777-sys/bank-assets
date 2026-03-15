@@ -1,0 +1,10 @@
+streamlit
+pandas
+qrcode[pil]
+Pillow
+scikit-learn
+plotly
+streamlit-authenticator
+SQLAlchemy
+pydantic
+pytest
