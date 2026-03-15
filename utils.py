@@ -13,18 +13,23 @@ def ensure_env(retries: int = 3, delay: float = 0.5):
         except Exception:
             pass
 
-    # Ensure audit log exists
-    try:
-        open(os.path.join('logs', 'audit.log'), 'a').close()
-    except Exception:
-        pass
+conn = sqlite3.connect(DB_PATH, check_same_thread=False)
+  # 1. Papkalarni va fayllarni tayyorlash (16-qatordan boshlab joyla)
+import os
+import sqlite3
 
-    # Ensure DB file exists and is connectable
-    attempt = 0
-    while attempt < retries:
-        try:
-            conn = sqlite3.connect(DB_PATH, timeout=5)
-            conn.execute('PRAGMA journal_mode=WAL;')
+# Papkalarni yaratish
+for folder in ['logs', 'data']:
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+# Audit faylini yaratish
+open(os.path.join('logs', 'audit.log'), 'a').close()
+
+# Ma'lumotlar bazasiga ulanish
+DB_PATH = os.path.join('data', 'assets.db')
+conn = sqlite3.connect(DB_PATH, check_same_thread=False)
+# (Shu yerda kodning davomi ketaveradi...)
             conn.commit()
             conn.close()
             break
